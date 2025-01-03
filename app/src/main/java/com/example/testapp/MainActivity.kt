@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.hologramImageView.startAnimation()
+        binding.hologramImageView.startAnimation()
 
         binding.tv.setOnClickListener {
 //            setWebView("https://www.google.com")

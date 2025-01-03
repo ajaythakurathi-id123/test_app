@@ -30,19 +30,35 @@ class AreaNoiseImageView : AppCompatImageView {
     private var areaColors: MutableList<Int> = mutableListOf()
 
     private val handler = Handler(Looper.getMainLooper())
-    private val updateInterval = 500L // Update color every second
+    private val updateInterval = 10L // Update color every second
 
-    val areaSize = 64 // Adjust area size as needed
+    private val areaSize = 8 // Adjust area size as needed
+    private val noiseSize = 256
+
+    // Glitch effect parameters
+    private var glitchIntensity = 0.05f // Adjust for intensity
+    private var glitchInterval = 500L // Interval for glitch effects
+
+
+    // List to hold custom colors
+    private var customColors: List<Int> = listOf(
+        Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
+        Color.CYAN, Color.MAGENTA, Color.GRAY, Color.WHITE
+    )
 
 
     init {
-        noisePaint.alpha = 64 // Adjust for noise intensity
+        noisePaint.alpha = 100 // Adjust for noise intensity
 
         // Generate noise texture
         generateNoiseTexture()
 
         // Schedule color updates
         scheduleColorUpdates()
+
+        // Schedule color updates and glitch effects
+//        scheduleColorUpdates()
+//        scheduleGlitchEffects()
     }
 
     constructor(context: Context) : super(context)
@@ -55,23 +71,10 @@ class AreaNoiseImageView : AppCompatImageView {
         defStyleAttr
     )
 
-    /*private fun generateNoiseTexture() {
-        val noiseSize = 256
-        noiseBitmap = Bitmap.createBitmap(noiseSize, noiseSize, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(noiseBitmap)
 
-        // Call the area noise generation method
-//        generateAreaNoise(canvas, noiseBitmap, 16) // Adjust area size as needed
-        generateAreaNoise(canvas, noiseBitmap, 32) // Adjust area size as needed
-
-        noiseShader = BitmapShader(noiseBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
-        noisePaint.shader = noiseShader
-    }
-    */
     private fun generateNoiseTexture() {
         Log.d(TAG, "generateNoiseTexture: ")
 
-        val noiseSize = 256
         noiseBitmap = Bitmap.createBitmap(noiseSize, noiseSize, Bitmap.Config.ARGB_8888)
 //        noiseBitmap = Bitmap.createBitmap(noiseSize, noiseSize, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(noiseBitmap)
@@ -86,15 +89,11 @@ class AreaNoiseImageView : AppCompatImageView {
         }
 
         // Generate area noise with initial colors
-//        generateAreaNoise(canvas, noiseBitmap, areaSize)
-
-        // **Clear the canvas (no noise)**
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-        noiseShader = null
+        generateAreaNoise(canvas, noiseBitmap, areaSize)
 
         // for noise
-//        noiseShader = BitmapShader(noiseBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
-//        noisePaint.shader = noiseShader
+        noiseShader = BitmapShader(noiseBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
+        noisePaint.shader = noiseShader
     }
 
     private fun generateAreaNoise(canvas: Canvas, noiseBitmap: Bitmap, areaSize: Int) {
@@ -113,18 +112,51 @@ class AreaNoiseImageView : AppCompatImageView {
                 // Get color for the current area
                 val color = areaColors[areaIndex]
 
-                // ... (Rest of the area noise generation as before)
-// Generate random color for the area
-                /*val color = Color.argb(
-                    random.nextInt(256),
-                    random.nextInt(256),
-                    random.nextInt(256),
-                    random.nextInt(256)
-                )*/
-
                 // Create a temporary canvas for the area
                 val areaBitmap = Bitmap.createBitmap(areaSize, areaSize, Bitmap.Config.ARGB_8888)
                 val areaCanvas = Canvas(areaBitmap)
+
+                // Randomly select a corner for the light source
+                val corner = random.nextInt(4)
+                var lightSourceX = centerX
+                var lightSourceY = centerY
+                when (corner) {
+                    0 -> { /* Top Left */
+                    }
+
+                    1 -> lightSourceX = centerX + areaRadius
+                    2 -> lightSourceY = centerY + areaRadius
+                    3 -> {
+                        lightSourceX = centerX + areaRadius; lightSourceY = centerY + areaRadius
+                    }
+                }
+
+                // Draw random noise within the area
+                /*for (ax in 0 until areaSize) {
+                    for (ay in 0 until areaSize) {
+                        val distanceToSource = Math.sqrt(
+                            Math.pow(
+                                (ax - lightSourceX).toDouble(),
+                                2.0
+                            ) + Math.pow((ay - lightSourceY).toDouble(), 2.0)
+                        )
+                        val maxDistance = Math.sqrt(Math.pow(areaRadius.toDouble(), 2.0) * 2.0)
+                        val brightness = (maxDistance - distanceToSource) / maxDistance
+                        val alpha = (brightness * 255).toInt().coerceIn(0, 255)
+                        areaCanvas.drawPoint(
+                            ax.toFloat(),
+                            ay.toFloat(),
+                            Paint().apply {
+                                this.color = Color.argb(
+                                    alpha,
+                                    Color.red(color),
+                                    Color.green(color),
+                                    Color.blue(color)
+                                )
+                            }
+                        )
+                    }
+                }*/
 
                 // Draw random noise within the area
                 for (ax in 0 until areaSize) {
@@ -163,12 +195,24 @@ class AreaNoiseImageView : AppCompatImageView {
         }, updateInterval)
     }
 
+
+    private fun scheduleGlitchEffects() {
+        handler.postDelayed({
+            applyGlitchEffect()
+            scheduleGlitchEffects()
+        }, glitchInterval)
+    }
+
+    private fun getRandomColorFromList(): Int {
+        return customColors[random.nextInt(customColors.size)]
+    }
+
     private fun updateAreaColors() {
         Log.d("HologramImageView", "updateAreaColors() called")
-       /* val randomAreaIndex = random.nextInt(areaColors.size)
-        val oldColor = areaColors[randomAreaIndex]
-        areaColors[randomAreaIndex] = getRandomColor()
-        Log.d("HologramImageView", "Area color changed: $oldColor -> ${areaColors[randomAreaIndex]}")*/
+        /* val randomAreaIndex = random.nextInt(areaColors.size)
+         val oldColor = areaColors[randomAreaIndex]
+         areaColors[randomAreaIndex] = getRandomColor()
+         Log.d("HologramImageView", "Area color changed: $oldColor -> ${areaColors[randomAreaIndex]}")*/
 
 
 //        areaColors= mutableListOf()
@@ -179,8 +223,64 @@ class AreaNoiseImageView : AppCompatImageView {
         invalidate()
     }
 
+    private fun applyPixelDisplacement() {
+        // Introduce small random pixel offsets
+        val maxOffset = 2
+        for (i in areaColors.indices) {
+            val xOffset = random.nextInt(maxOffset * 2) - maxOffset
+            val yOffset = random.nextInt(maxOffset * 2) - maxOffset
+            // ... (Handle boundary conditions to prevent out-of-bounds access) ...
+        }
+    }
+
+    private fun applyColorChannelSeparation() {
+        // Separate color channels (example: red)
+        for (i in areaColors.indices) {
+            val color = areaColors[i]
+            val r = Color.red(color)
+            val g = Color.green(color)
+            val b = Color.blue(color)
+            areaColors[i] = Color.rgb(r, 0, 0) // Red channel only
+        }
+    }
+
+    private fun applyScanlineFlicker() {
+        // Simulate scanline flicker
+        val numScanlines = 10
+        val scanlineWidth = height / numScanlines
+        val flickerChance = 0.1f // Adjust for flicker frequency
+        for (y in 0 until numScanlines) {
+            if (random.nextFloat() < flickerChance) {
+                // Invert colors within the scanline
+                for (x in 0 until noiseSize step areaSize) {
+                    val areaIndex = (x / areaSize) + (y * (noiseSize / areaSize))
+                    if (areaIndex < areaColors.size) {
+                        val color = areaColors[areaIndex]
+                        val invertedColor = Color.rgb(
+                            255 - Color.red(color),
+                            255 - Color.green(color),
+                            255 - Color.blue(color)
+                        )
+                        areaColors[areaIndex] = invertedColor
+                    }
+                }
+            }
+        }
+    }
+
+    private fun applyGlitchEffect() {
+        // Randomly choose a glitch type
+        when (random.nextInt(3)) {
+            0 -> applyPixelDisplacement() // Pixel displacement
+            1 -> applyColorChannelSeparation() // Color channel separation
+            2 -> applyScanlineFlicker() // Scanline flicker
+        }
+
+        invalidate()
+    }
+
     //noise
-    /*override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         Log.d(TAG, "onDraw: ")
@@ -197,29 +297,6 @@ class AreaNoiseImageView : AppCompatImageView {
             // it.setLocalMatrix(Matrix().apply { postTranslate(noiseOffsetX, noiseOffsetY) })
         }
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), noisePaint)
-
-        // Restore the canvas state
-        canvas.restore()
-    }*/
-
-    // without noise
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-
-        // Save the canvas state
-        canvas.saveLayer(null, paint, Canvas.ALL_SAVE_FLAG)
-
-        // Draw the image
-        super.onDraw(canvas)
-
-        // Apply color overlay (without noise)
-        for (x in 0 until noiseBitmap.width step areaSize) {
-            for (y in 0 until noiseBitmap.height step areaSize) {
-                val color = areaColors[(x / areaSize) + (y / areaSize) * (noiseBitmap.width / areaSize)]
-                noisePaint.color = color
-                canvas.drawRect(x.toFloat(), y.toFloat(), (x + areaSize).toFloat(), (y + areaSize).toFloat(), noisePaint)
-            }
-        }
 
         // Restore the canvas state
         canvas.restore()

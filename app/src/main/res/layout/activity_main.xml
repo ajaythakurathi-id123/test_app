@@ -9,6 +9,18 @@
 
     <!--    <com.example.testapp.customview.HologramImageView-->
 
+    <com.example.testapp.customview.HologramImageView
+        android:id="@+id/hologramImageView"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_hologram"
         android:layout_width="300dp"
@@ -19,7 +31,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.example.testapp.customview.AreaNoiseImageView
+        <!--<com.example.testapp.customview.AreaNoiseImageView
+            android:id="@+id/imageView"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <com.example.testapp.customview.NoiseImageView
             android:id="@+id/imageView"
             android:layout_width="300dp"
             android:layout_height="150dp"
