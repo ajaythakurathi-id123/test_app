@@ -9,13 +9,35 @@
 
     <!--    <com.example.testapp.customview.HologramImageView-->
 
+    <include
+        android:id="@+id/layout_motion"
+        layout="@layout/hologram_motion_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnTransition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="FIre"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+/>
+
     <com.example.testapp.customview.HologramImageView
         android:id="@+id/hologramImageView"
         android:layout_width="300dp"
         android:layout_height="150dp"
         android:scaleType="fitXY"
-        android:visibility="gone"
         android:src="@drawable/logo"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +47,7 @@
         android:id="@+id/cl_hologram"
         android:layout_width="300dp"
         android:layout_height="150dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +70,7 @@
             android:layout_height="150dp"
             android:scaleType="fitXY"
             android:src="@drawable/logo"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +88,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     <androidx.appcompat.widget.AppCompatImageView

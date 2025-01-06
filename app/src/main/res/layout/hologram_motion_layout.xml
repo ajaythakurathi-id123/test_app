@@ -1,0 +1,21 @@
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:motion="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/motionHologram"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:showPaths="true"
+    app:layoutDescription="@xml/motion_scene">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/hologramImage"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.motion.widget.MotionLayout>

@@ -5,13 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.lifecycle.lifecycleScope
 import com.example.testapp.databinding.ActivityMainBinding
+import com.example.testapp.databinding.HologramMotionLayoutBinding
 import com.example.testapp.scanner.camera.BarcodeScanActivity
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.binary.Base32
 import dev.turingcomplete.kotlinonetimepassword.GoogleAuthenticator
 import dev.turingcomplete.kotlinonetimepassword.HmacAlgorithm
 import dev.turingcomplete.kotlinonetimepassword.TimeBasedOneTimePasswordConfig
 import dev.turingcomplete.kotlinonetimepassword.TimeBasedOneTimePasswordGenerator
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -24,6 +29,9 @@ class MainActivity : AppCompatActivity() {
     val patternUS = "^1\\s?\\-?\\(?\\d{3}\\)?[-\\s]?\\d{3}[-\\s]?\\d{4}$"
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var hologramBinding: HologramMotionLayoutBinding
+
+    private var isAtStart = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +41,49 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.hologramImageView.startAnimation()
+
+        // Initialize hologramBinding
+//        hologramBinding = HologramMotionLayoutBinding.inflate(layoutInflater)
+//        setContentView(hologramBinding.root)
+        val motionHologram = binding.layoutMotion.motionHologram
+        // Access motion_hologram through hologramBinding
+//        val motionHologram = hologramBinding.motionHologram
+
+        // Example usage
+//        motionHologram.setTransition(R.id.start, R.id.end)
+
+        /*binding.btnTransition.setOnClickListener {
+            if (isAtStart) {
+                motionHologram.transitionToEnd()
+            } else {
+                motionHologram.transitionToStart()
+            }
+            isAtStart = !isAtStart
+        }*/
+
+        // Start the animation loop
+        lifecycleScope.launch {
+            startAnimationLoop(motionHologram)
+        }
+
+        // Tilt up
+        /*motionHologram.setTransition(R.id.start, R.id.tiltUp)
+        motionHologram.transitionToEnd()
+
+        // Tilt down
+        motionHologram.setTransition(R.id.start, R.id.tiltDown)
+        motionHologram.transitionToEnd()
+
+        // Tilt left
+        motionHologram.setTransition(R.id.start, R.id.tiltLeft)
+        motionHologram.transitionToEnd()
+
+        // Tilt right
+        motionHologram.setTransition(R.id.start, R.id.tiltRight)
+        motionHologram.transitionToEnd()*/
+
+//        motionHologram.transitionToEnd()
+//        motionHologram.transitionToStart()
 
         binding.tv.setOnClickListener {
 //            setWebView("https://www.google.com")
@@ -61,6 +111,24 @@ class MainActivity : AppCompatActivity() {
         }
 //        setWebView("https://www.google.com")
 //        testRegex()
+    }
+
+    private suspend fun startAnimationLoop(motionLayout: MotionLayout) {
+        val transitions = listOf(
+            R.id.start to R.id.tiltUp,
+            R.id.tiltUp to R.id.tiltRight,
+            R.id.tiltRight to R.id.tiltDown,
+            R.id.tiltDown to R.id.tiltLeft,
+            R.id.tiltLeft to R.id.start
+        )
+
+        while (true) { // Infinite loop for cycling animation
+            for ((start, end) in transitions) {
+                motionLayout.setTransition(start, end)
+                motionLayout.transitionToEnd()
+                delay(200) // 200ms delay for each transition
+            }
+        }
     }
 
     var topt = ""
