@@ -1,10 +1,15 @@
 package com.example.testapp
 
+import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.lifecycle.lifecycleScope
 import com.example.testapp.databinding.ActivityMainBinding
@@ -42,9 +47,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        // Initialize hologramBinding
-//        hologramBinding = HologramMotionLayoutBinding.inflate(layoutInflater)
-//        setContentView(hologramBinding.root)
+
+
         val motionHologram = binding.layoutMotion.motionHologram
         // Access motion_hologram through hologramBinding
 //        val motionHologram = hologramBinding.motionHologram
@@ -112,6 +116,37 @@ class MainActivity : AppCompatActivity() {
 //        setWebView("https://www.google.com")
 //        testRegex()
     }
+
+    /*private fun applySmoothGradientEffect(imageView: AppCompatImageView) {
+        // Set up the GradientDrawable for the gradient effect
+        val gradientDrawable = createGradientDrawable()
+        imageView.foreground = gradientDrawable // Apply gradient as foreground
+
+        // Animate the gradient
+        animateGradient(gradientDrawable)
+    }
+
+    private fun createGradientDrawable(): LinearGradient {
+        val colors = intArrayOf(
+            Color.argb(76, 255, 0, 0), // Red with transparency
+            Color.argb(76, 0, 0, 255), // Blue with transparency
+            Color.argb(76, 0, 255, 0), // Green with transparency
+            Color.argb(76, 255, 255, 0) // Yellow with transparency
+        )
+
+        // Create a LinearGradient (you can change to SweepGradient for more dynamic effect)
+        return LinearGradient(
+            0f, 0f, 0f, 1000f, colors, null, Shader.TileMode.CLAMP
+        )
+    }
+
+    private fun animateGradient(gradientDrawable: LinearGradient) {
+        // Create the ObjectAnimator to animate the gradient movement (rotation here)
+        val angleAnimator = ObjectAnimator.ofFloat(gradientDrawable, "angle", 0f, 360f)
+        angleAnimator.duration = 5000 // Duration of each animation (5 seconds)
+        angleAnimator.repeatCount = ObjectAnimator.INFINITE
+        angleAnimator.start()
+    }*/
 
     private suspend fun startAnimationLoop(motionLayout: MotionLayout) {
         val transitions = listOf(
