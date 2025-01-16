@@ -68,60 +68,77 @@ class LayeredLinearHologram @JvmOverloads constructor(
 
     // layer 2
     init {
-        // Initialize ValueAnimator for animating colors
+        // Animator for cycling through holographic colors
         val colorAnimator = ValueAnimator.ofArgb(
-            Color.WHITE, Color.CYAN, Color.GREEN, Color.RED
+            Color.parseColor("#77ffffff"), // Semi-transparent white
+            Color.parseColor("#7799cc00"), // Semi-transparent green
+            Color.parseColor("#77b3e5f2"), // Semi-transparent cyan
+            Color.parseColor("#77f44336"), // Semi-transparent red
+            Color.parseColor("#77ab47bc")  // Semi-transparent purple
         )
-        colorAnimator.duration = 2000 // Duration for one cycle
-        colorAnimator.repeatCount = ValueAnimator.INFINITE // Repeat animation indefinitely
-        colorAnimator.repeatMode = ValueAnimator.REVERSE // Reverse direction after each cycle
-
-        // Update listener to change the gradient colors dynamically
+        colorAnimator.duration = 2000 // Animation duration in milliseconds
+        colorAnimator.repeatCount = ValueAnimator.INFINITE
+        colorAnimator.repeatMode = ValueAnimator.REVERSE
         colorAnimator.addUpdateListener { animation ->
             val color = animation.animatedValue as Int
-            updateGradientColors(color)
+            updateGradientColors(color) // Update gradient colors dynamically
         }
-
-        // Start the animation
         colorAnimator.start()
     }
 
+    /**
+     * Updates the gradient colors for all layers dynamically.
+     * @param color The animated color used for updating gradients.
+     */
     private fun updateGradientColors(color: Int) {
-        // Retrieve the current LayerDrawable
-        val drawable = drawable as? LayerDrawable
-        if (drawable != null) {
-            // Layer 1: Base Gradient (Transparent to White to Black)
-            val gradientDrawable1 = drawable.getDrawable(0) as? GradientDrawable
-            gradientDrawable1?.setColors(
-                intArrayOf(color, Color.TRANSPARENT, Color.BLACK)  // Adjust start, center, and end colors
-            )
+        val drawable = drawable as? LayerDrawable ?: return
 
-            // Layer 2: Green to Blue Gradient (Vertical)
-            val gradientDrawable2 = drawable.getDrawable(1) as? GradientDrawable
-            gradientDrawable2?.setColors(
-                intArrayOf(Color.parseColor("#7799cc00"), Color.TRANSPARENT, Color.parseColor("#7733b5e5"))
-            )
+        // Layer 1: Base Gradient (Transparent to White to Black)
+        val gradientDrawable1 = drawable.getDrawable(0) as? GradientDrawable
+        gradientDrawable1?.setColors(
+            intArrayOf(Color.TRANSPARENT, color, Color.BLACK) // Adjust start, center, and end colors
+        )
 
-            // Layer 3: Cyan to Transparent Gradient (45-degree angle)
-            val gradientDrawable3 = drawable.getDrawable(2) as? GradientDrawable
-            gradientDrawable3?.setColors(
-                intArrayOf(Color.parseColor("#77b3e5f2"), Color.TRANSPARENT)
+        // Layer 2: Vertical Gradient (Top to Bottom - Green to Blue)
+        val gradientDrawable2 = drawable.getDrawable(1) as? GradientDrawable
+        gradientDrawable2?.setColors(
+            intArrayOf(
+                Color.parseColor("#7799cc00"), // Semi-transparent green
+                color,                         // Dynamic center color
+                Color.parseColor("#7733b5e5")  // Semi-transparent blue
             )
+        )
 
-            // Layer 4: Red to Transparent Gradient (135-degree angle)
-            val gradientDrawable4 = drawable.getDrawable(3) as? GradientDrawable
-            gradientDrawable4?.setColors(
-                intArrayOf(Color.parseColor("#77f44336"), Color.TRANSPARENT)
+        // Layer 3: Diagonal Gradient (Top Left to Bottom Right - Cyan to Transparent)
+        val gradientDrawable3 = drawable.getDrawable(2) as? GradientDrawable
+        gradientDrawable3?.setColors(
+            intArrayOf(
+                Color.parseColor("#77b3e5f2"), // Semi-transparent cyan
+                color,                         // Dynamic center color
+                Color.TRANSPARENT              // Transparent
             )
+        )
 
-            // Layer 5: Purple to Transparent Gradient (Horizontal)
-            val gradientDrawable5 = drawable.getDrawable(4) as? GradientDrawable
-            gradientDrawable5?.setColors(
-                intArrayOf(Color.parseColor("#77ab47bc"), Color.TRANSPARENT)
+        // Layer 4: Diagonal Gradient (Top Right to Bottom Left - Red to Transparent)
+        val gradientDrawable4 = drawable.getDrawable(3) as? GradientDrawable
+        gradientDrawable4?.setColors(
+            intArrayOf(
+                Color.parseColor("#77f44336"), // Semi-transparent red
+                color,                         // Dynamic center color
+                Color.TRANSPARENT              // Transparent
             )
+        )
 
-            // Trigger a redraw to apply the updated gradient
-            invalidate()
-        }
+        // Layer 5: Horizontal Gradient (Left to Right - Purple to Transparent)
+        val gradientDrawable5 = drawable.getDrawable(4) as? GradientDrawable
+        gradientDrawable5?.setColors(
+            intArrayOf(
+                Color.parseColor("#77ab47bc"), // Semi-transparent purple
+                color,                         // Dynamic center color
+                Color.TRANSPARENT              // Transparent
+            )
+        )
+
+        invalidate() // Redraw the view to apply changes
     }
 }
