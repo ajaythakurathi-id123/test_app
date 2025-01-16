@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base Layer: White to Blue to Black Gradient -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="#77ffffff"
+                android:centerColor="@android:color/transparent"
+                android:endColor="#77000000"
+                android:centerX="0.5" />
+        </shape>
+    </item>
+
+    <!-- Overlay Layer 1: Black to Transparent Gradient at 180 degrees (Vertical) -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="#7799cc00"
+                android:centerColor="@android:color/transparent"
+                android:endColor="#7733b5e5"
+                android:centerY="0.5"
+                android:angle="90"/>
+        </shape>
+    </item>
+
+    <!-- Overlay Layer 2: Light Blue to Transparent Gradient at 45 degrees (Diagonal) -->
+    <!--<item>
+        <shape>
+            <gradient
+                android:startColor="@android:color/holo_blue_bright"
+                android:endColor="@android:color/transparent"
+                android:angle="45"/>
+        </shape>
+    </item>-->
+
+    <!-- Overlay Layer 3: Semi-transparent Black to Transparent Gradient at 135 degrees -->
+    <!--<item>
+        <shape>
+            <gradient
+                android:startColor="@android:color/black"
+                android:endColor="@android:color/transparent"
+                android:angle="135"
+                android:centerY="0.5"/>
+        </shape>
+    </item>-->
+</layer-list>

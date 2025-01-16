@@ -5,12 +5,13 @@ import android.graphics.*
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testapp.databinding.ActivityMain2Binding
 
-class MainActivity2 : AppCompatActivity() {
+class MainActivity2 : AppCompatActivity(R.layout.activity_main_2) {
 
     private lateinit var binding: ActivityMain2Binding
 
@@ -25,6 +26,9 @@ class MainActivity2 : AppCompatActivity() {
 //        applySmoothGradientEffect(binding.imageView)
 
 
+        //radial_gradient
+        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.blob_scale)
+        binding.imageView.startAnimation(scaleAnimation)
     }
 
     private fun applySmoothGradientEffect(imageView: ImageView) {

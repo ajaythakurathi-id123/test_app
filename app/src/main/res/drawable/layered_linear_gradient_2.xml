@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base Layer: Transparent to semi-transparent white to black gradient -->
+    <item>
+        <shape>
+            <!-- Semi-transparent White -->
+            <!-- Semi-transparent White, with reduced opacity -->
+            <!-- Semi-transparent Black -->
+            <!-- Center X-axis for smooth transition -->
+            <gradient
+                android:centerColor="#55ffffff"
+                android:centerX="0.5"
+                android:endColor="#77000000"
+                android:startColor="#77ffffff"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Overlay Layer 1: Vertical Gradient with Green and Blue -->
+    <item>
+        <shape>
+            <!-- Semi-transparent Green -->
+            <!-- Reduced opacity -->
+            <!-- Semi-transparent Blue -->
+            <!-- Center Y-axis for smooth transition -->
+            <!-- Vertical Gradient (Top to Bottom) -->
+            <gradient
+                android:angle="90"
+                android:centerColor="#5599cc00"
+                android:centerY="0.5"
+                android:endColor="#7733b5e5"
+                android:startColor="#7799cc00"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Overlay Layer 2: Cyan to Transparent Gradient (45-degree angle) -->
+    <!-- top left to bottom right-->
+    <item>
+        <shape>
+            <!-- Semi-transparent Cyan -->
+            <!-- Reduced opacity -->
+            <!-- Transparent -->
+            <!-- Diagonal Gradient -->
+            <gradient
+                android:angle="45"
+                android:centerColor="#55b3e5f2"
+                android:endColor="#00ffffff"
+                android:startColor="#77b3e5f2"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Overlay Layer 3: Red to Transparent Gradient (135-degree angle) -->
+    <!-- top-right to bottom-left -->
+    <item>
+        <shape>
+            <!-- Semi-transparent Red -->
+            <!-- Reduced opacity -->
+            <!-- Transparent -->
+            <!-- Diagonal Gradient -->
+            <gradient
+                android:angle="135"
+                android:centerColor="#55f44336"
+                android:endColor="#00ffffff"
+                android:startColor="#77f44336"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Overlay Layer 4: Purple to Transparent Gradient -->
+    <item>
+        <shape>
+            <!-- Semi-transparent Purple -->
+            <!-- Reduced opacity -->
+            <!-- Transparent -->
+            <!-- Horizontal Gradient -->
+            <gradient
+                android:angle="0"
+                android:centerColor="#55ab47bc"
+                android:endColor="#00ffffff"
+                android:startColor="#77ab47bc"
+                android:type="linear" />
+        </shape>
+    </item>
+
+</layer-list>

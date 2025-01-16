@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background shape -->
+    <item>
+        <shape>
+            <solid android:color="@android:color/black" />
+        </shape>
+    </item>
+
+    <!-- Floating blob 1 (Purple) -->
+    <item>
+        <shape>
+            <gradient
+                android:type="radial"
+                android:gradientRadius="100%"
+                android:startColor="@android:color/holo_purple"
+                android:centerX="0.1"
+                android:centerY="0.1"
+                android:endColor="@android:color/transparent" />
+        </shape>
+    </item>
+
+    <!-- Floating blob 2 (Orange) -->
+    <item>
+        <shape>
+            <gradient
+                android:type="radial"
+                android:gradientRadius="70%"
+                android:startColor="@android:color/holo_orange_light"
+                android:centerX="0.8"
+                android:centerY="0.5"
+                android:endColor="@android:color/transparent" />
+        </shape>
+    </item>
+
+    <!-- Floating blob 3 (Blue) -->
+    <item>
+        <shape>
+            <gradient
+                android:type="radial"
+                android:gradientRadius="40%"
+                android:startColor="@android:color/holo_blue_light"
+                android:centerX="0.8"
+                android:centerY="0.1"
+                android:endColor="@android:color/transparent" />
+        </shape>
+    </item>
+
+    <!-- Floating blob 4 (Green) -->
+    <item>
+        <shape>
+            <gradient
+                android:type="radial"
+                android:gradientRadius="70%"
+                android:startColor="@android:color/holo_green_light"
+                android:centerX="0.2"
+                android:centerY="0.8"
+                android:endColor="@android:color/transparent" />
+        </shape>
+    </item>
+
+    <!-- Floating blob 5 (Red) -->
+    <item>
+        <shape>
+            <gradient
+                android:type="radial"
+                android:gradientRadius="50%"
+                android:startColor="@android:color/holo_red_light"
+                android:centerX="0.7"
+                android:centerY="0.85"
+                android:endColor="@android:color/transparent" />
+        </shape>
+    </item>
+</layer-list>
