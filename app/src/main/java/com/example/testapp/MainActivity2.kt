@@ -29,6 +29,8 @@ class MainActivity2 : AppCompatActivity(R.layout.activity_main_2) {
         //radial_gradient
 //        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.blob_scale)
 //        binding.imageView.startAnimation(scaleAnimation)
+
+        binding.layeredLinearImageView.setImageResourceWithAnimation(R.drawable.man)
     }
 
     private fun applySmoothGradientEffect(imageView: ImageView) {

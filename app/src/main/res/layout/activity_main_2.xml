@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity2">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <!--<androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -17,14 +17,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <com.example.testapp.customview.LayeredLinearHologram
-        android:id="@+id/animatedGradientView"
+<!--    <com.example.testapp.customview.LayeredLinearHologram-->
+    <com.example.testapp.holoimageview.LayeredLinearImageView
+        android:id="@+id/layeredLinearImageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:visibility="visible"
-        android:alpha="0.5"
         android:src="@drawable/layered_linear_gradient_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
