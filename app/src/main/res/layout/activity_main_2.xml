@@ -22,8 +22,8 @@
 <!--    <com.example.testapp.customview.LayeredLinearHologram-->
     <com.example.testapp.holoimageview.LayeredLinearImageView
         android:id="@+id/layeredLinearImageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:visibility="visible"
         android:src="@drawable/layered_linear_gradient_2"
         app:layout_constraintBottom_toBottomOf="parent"

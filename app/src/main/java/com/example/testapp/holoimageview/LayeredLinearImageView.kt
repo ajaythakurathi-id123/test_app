@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import com.example.testapp.R
 
 class LayeredLinearImageView @JvmOverloads constructor(
     context: Context,
@@ -20,11 +21,11 @@ class LayeredLinearImageView @JvmOverloads constructor(
     init {
         // Animator for cycling through holographic colors
         val colorAnimator = ValueAnimator.ofArgb(
-            Color.parseColor("#77ffffff"), // Semi-transparent white
-            Color.parseColor("#7799cc00"), // Semi-transparent green
-            Color.parseColor("#77b3e5f2"), // Semi-transparent cyan
-            Color.parseColor("#77f44336"), // Semi-transparent red
-            Color.parseColor("#77ab47bc")  // Semi-transparent purple
+            Color.parseColor("#44ffffff"), // Semi-transparent white
+            Color.parseColor("#4499cc00"), // Semi-transparent green
+            Color.parseColor("#44b3e5f2"), // Semi-transparent cyan
+            Color.parseColor("#44f44336"), // Semi-transparent red
+            Color.parseColor("#44ab47bc")  // Semi-transparent purple
         )
         colorAnimator.duration = 2000 // Animation duration in milliseconds
         colorAnimator.repeatCount = ValueAnimator.INFINITE
@@ -43,52 +44,67 @@ class LayeredLinearImageView @JvmOverloads constructor(
     private fun updateGradientColors(color: Int) {
         val drawable = drawable as? LayerDrawable ?: return
 
-        // Ensure the LayerDrawable has the expected number of layers
-        /*if (drawable.numberOfLayers < 5) {
-            Log.d("TAG", "updateGradientColors: not 5")
-        }*/
+        // Check if the current drawable is a LayerDrawable
+        val layerDrawable = drawable as? LayerDrawable
+        if (layerDrawable == null) {
+            Log.e("LayeredImageView", "Drawable is not a LayerDrawable")
+            return
+        }
+
+        // Ensure the LayerDrawable has at least 2 layers (image + gradients)
+        if (layerDrawable.numberOfLayers < 2) {
+            Log.e("LayeredImageView", "LayerDrawable does not have enough layers. Found: ${layerDrawable.numberOfLayers}")
+            return
+        }
+
+        // Get the gradient drawable (assume it's the second layer)
+        val gradientLayer = layerDrawable.getDrawable(1) as? LayerDrawable
+        if (gradientLayer == null) {
+            Log.e("LayeredImageView", "Gradient layer is missing or not a LayerDrawable")
+            return
+        }
 
         // Layer 1: Base Gradient (Transparent to White to Black)
-        val gradientDrawable1 = drawable.getDrawable(0) as? GradientDrawable
+        val gradientDrawable1 = gradientLayer.getDrawable(0) as? GradientDrawable
         gradientDrawable1?.setColors(
             intArrayOf(Color.TRANSPARENT, color, Color.BLACK) // Adjust start, center, and end colors
         )
 
         // Layer 2: Vertical Gradient (Top to Bottom - Green to Blue)
-        val gradientDrawable2 = drawable.getDrawable(1) as? GradientDrawable
+        val gradientDrawable2 = gradientLayer.getDrawable(1) as? GradientDrawable
         gradientDrawable2?.setColors(
             intArrayOf(
-                Color.parseColor("#7799cc00"), // Semi-transparent green
+                Color.parseColor("#4499cc00"), // Semi-transparent green
                 color,                         // Dynamic center color
-                Color.parseColor("#7733b5e5")  // Semi-transparent blue
+                Color.parseColor("#4433b5e5")  // Semi-transparent blue
             )
         )
 
         // Layer 3: Diagonal Gradient (Top Left to Bottom Right - Cyan to Transparent)
-        val gradientDrawable3 = drawable.getDrawable(2) as? GradientDrawable
+        val gradientDrawable3 = gradientLayer.getDrawable(2) as? GradientDrawable
         gradientDrawable3?.setColors(
             intArrayOf(
-                Color.parseColor("#77b3e5f2"), // Semi-transparent cyan
+                Color.parseColor("#44b3e5f2"), // Semi-transparent cyan
                 color,                         // Dynamic center color
                 Color.TRANSPARENT              // Transparent
             )
         )
 
         // Layer 4: Diagonal Gradient (Top Right to Bottom Left - Red to Transparent)
-        val gradientDrawable4 = drawable.getDrawable(3) as? GradientDrawable
+        val gradientDrawable4 = gradientLayer.getDrawable(3) as? GradientDrawable
         gradientDrawable4?.setColors(
             intArrayOf(
-                Color.parseColor("#77f44336"), // Semi-transparent red
+                Color.parseColor("#44f44336"), // Semi-transparent red
                 color,                         // Dynamic center color
                 Color.TRANSPARENT              // Transparent
             )
         )
 
         // Layer 5: Horizontal Gradient (Left to Right - Purple to Transparent)
-        val gradientDrawable5 = drawable.getDrawable(4) as? GradientDrawable
+        val gradientDrawable5 = gradientLayer.getDrawable(4) as? GradientDrawable
         gradientDrawable5?.setColors(
             intArrayOf(
-                Color.parseColor("#77ab47bc"), // Semi-transparent purple
+                Color.parseColor("#44ab47bc"), // Semi-transparent purple
                 color,                         // Dynamic center color
                 Color.TRANSPARENT              // Transparent
             )
@@ -96,12 +112,48 @@ class LayeredLinearImageView @JvmOverloads constructor(
 
         invalidate() // Redraw the view to apply changes
     }
+    /*private fun updateGradientColors(color: Int) {
+        // Check if the current drawable is a LayerDrawable
+        val layerDrawable = drawable as? LayerDrawable
+        if (layerDrawable == null) {
+            Log.e("LayeredImageView", "Drawable is not a LayerDrawable")
+            return
+        }
+
+        // Ensure the LayerDrawable has at least 2 layers (image + gradients)
+        if (layerDrawable.numberOfLayers < 2) {
+            Log.e("LayeredImageView", "LayerDrawable does not have enough layers. Found: ${layerDrawable.numberOfLayers}")
+            return
+        }
+
+        // Get the gradient drawable (assume it's the second layer)
+        val gradientLayer = layerDrawable.getDrawable(1) as? LayerDrawable
+        if (gradientLayer == null) {
+            Log.e("LayeredImageView", "Gradient layer is missing or not a LayerDrawable")
+            return
+        }
+
+        // Update individual gradient layers
+        for (i in 0 until gradientLayer.numberOfLayers) {
+            val gradient = gradientLayer.getDrawable(i) as? GradientDrawable
+            gradient?.setColors(
+                intArrayOf(
+                    Color.TRANSPARENT, // Start color
+                    color,             // Dynamic center color
+                    Color.BLACK        // End color
+                )
+            )
+        }
+
+        invalidate() // Redraw the view
+    }*/
+
 
     /**
      * Sets a new image resource for the ImageView and overlays gradient layers.
      * @param imgRes The resource ID of the new image.
      */
-    fun setImageResourceWithAnimation(imgRes: Int) {
+    /*fun setImageResourceWithAnimation(imgRes: Int) {
         val originalDrawable = context.getDrawable(imgRes) ?: return
 
         // Create a LayerDrawable with your gradients
@@ -116,10 +168,25 @@ class LayeredLinearImageView @JvmOverloads constructor(
         // Set the original image as the bottom layer
         val imageLayerDrawable = LayerDrawable(arrayOf(originalDrawable, layerDrawable))
         setImageDrawable(imageLayerDrawable)
+    }*/
+
+    fun setImageResourceWithAnimation(imgRes: Int) {
+        // Original image resource
+        val imageDrawable = context.getDrawable(imgRes) ?: return
+
+        // Load the gradient drawable from XML (your layered gradient)
+        val gradientDrawable = context.getDrawable(R.drawable.layered_linear_gradient_2) as? LayerDrawable
+            ?: return
+
+        // Combine the original image and the gradients
+        val combinedDrawable = LayerDrawable(arrayOf(imageDrawable, gradientDrawable))
+
+        // Set the combined drawable to the ImageView
+        setImageDrawable(combinedDrawable)
     }
 
     // Helper methods to create the gradient drawables
-    private fun createGradientDrawable1(): GradientDrawable {
+    /*private fun createGradientDrawable1(): GradientDrawable {
         return GradientDrawable().apply {
             orientation = GradientDrawable.Orientation.LEFT_RIGHT
             colors = intArrayOf(Color.TRANSPARENT, Color.WHITE, Color.BLACK)
@@ -152,6 +219,6 @@ class LayeredLinearImageView @JvmOverloads constructor(
             orientation = GradientDrawable.Orientation.LEFT_RIGHT
             colors = intArrayOf(Color.parseColor("#77ab47bc"), Color.TRANSPARENT)
         }
-    }
+    }*/
 }
 
